@@ -5,7 +5,6 @@
 #SBATCH --output=logs/dreamer_%j.out
 #SBATCH --error=logs/dreamer_%j.err
 #SBATCH --partition=students
-#SBATCH --nodelist=hpc-node08
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
