@@ -3,6 +3,7 @@ run*
 logdir*
 vis_*
 result*
+!slurm/run_dreamer.sbatch
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

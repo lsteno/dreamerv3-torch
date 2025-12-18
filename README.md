@@ -23,6 +23,19 @@ To set up Atari or Minecraft environments, please check the scripts located in [
 
 Please refer to the Dockerfile for the instructions, as they are included within.
 
+### Method 3: SLURM (HPC)
+
+Use the template in `slurm/run_dreamer.sbatch` to launch jobs on clusters that run Slurm:
+
+1. Create (or update) a Python 3.11 virtualenv on the cluster and install `requirements.txt`.
+2. Edit the SBATCH directives and module loads in `slurm/run_dreamer.sbatch` to match your partition name, GPU/CPU quotas, and module stack.
+3. Optionally run the helper scripts in `envs/setup_scripts/` inside the batch script if the task needs additional assets (Atari ROMs, Minecraft datasets, etc.).
+4. Submit the job from the repository root:
+	```
+	sbatch slurm/run_dreamer.sbatch
+	```
+5. Monitor with `squeue -u $USER` and inspect the generated `slurm-<job>-<id>.out` log for progress.
+
 ## Benchmarks
 So far, the following benchmarks can be used for testing.
 | Environment        | Observation | Action | Budget | Description |
