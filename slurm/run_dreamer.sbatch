@@ -1,15 +1,22 @@
 #!/bin/bash
-# Example SLURM script for launching DreamerV3 training on a GPU node.
+# SLURM script for launching DreamerV3 training on a GPU node.
 
-#SBATCH --job-name=dreamer_dmc
-#SBATCH --partition=gpu
+#SBATCH --job-name=dreamer_v3
+#SBATCH --output=logs/dreamer_%j.out
+#SBATCH --error=logs/dreamer_%j.err
+#SBATCH --partition=students
+#SBATCH --nodelist=hpc-node08
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
-#SBATCH --time=24:00:00
-#SBATCH --output=slurm-%x-%j.out
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=100G
+#SBATCH --time=40:00:00
+#SBATCH --ntasks=1
 
 set -euo pipefail
+
+# --- Modules ---------------------------------------------------------------
+# Adjust the Python module to match what's available on your cluster.
+module load python/3.11 || module load python/3.10.7 || true
 
 # --- User configuration ----------------------------------------------------
 # Update these to match your cluster environment before submitting.
@@ -27,17 +34,18 @@ if [ ! -d "$VENV_DIR" ]; then
   exit 1
 fi
 
+cd "$PROJECT_ROOT"
 source "$VENV_DIR/bin/activate"
-cd "$SLURM_SUBMIT_DIR"
 export PYTHONPATH="$SLURM_SUBMIT_DIR:${PYTHONPATH:-}"
 
-mkdir -p "$LOGDIR"
+# Ensure log directories exist (Slurm needs 'logs' present at submit time).
+mkdir -p "$PROJECT_ROOT/logs" "$LOGDIR"
 
 # Uncomment if your run needs extra assets (Atari ROMs, Minecraft data, etc.).
 # bash envs/setup_scripts/atari.sh
 # bash envs/setup_scripts/minecraft.sh
 
-srun python dreamer.py \
+python3 dreamer.py \
   --configs "$CONFIG_NAME" \
   --task "$TASK_NAME" \
   --logdir "$LOGDIR"
