@@ -13,13 +13,12 @@ set -euo pipefail
 
 # --- User configuration ----------------------------------------------------
 # Update these to match your cluster environment before submitting.
-module purge
-module load python/3.11
 
-VENV_DIR="${VENV_DIR:-$HOME/venvs/dreamerv3}"  # Override when needed
+PROJECT_ROOT="${PROJECT_ROOT:-$SLURM_SUBMIT_DIR}"
+VENV_DIR="${VENV_DIR:-$PROJECT_ROOT/venv}"
 CONFIG_NAME="${CONFIG_NAME:-dmc_vision}"
 TASK_NAME="${TASK_NAME:-dmc_walker_walk}"
-LOGDIR="${LOGDIR:-logdir/${TASK_NAME}}"
+LOGDIR="${LOGDIR:-$PROJECT_ROOT/logdir/${TASK_NAME}}"
 
 # --- Environment bootstrap -------------------------------------------------
 if [ ! -d "$VENV_DIR" ]; then
