@@ -7,7 +7,7 @@
 #SBATCH --partition=students
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=32G
+#SBATCH --mem=24G
 #SBATCH --time=04:00:00
 #SBATCH --ntasks=1
 
